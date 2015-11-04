@@ -9,30 +9,99 @@
   <!-- Site Properities -->
   <title>Express - Gcloud - Semantic</title>
 
-  <!-- <link rel="stylesheet" type="text/css" href="semantic.css"> -->
+  <link rel="stylesheet" type="text/css" href="semantic.min.css">
   <link rel="stylesheet" type="text/css" href="style.css">
 
-  <script src="jquery.js"></script>
-  <script src="semantic.js"></script>
+
+  <script src="jquery.min.js"></script>
+  <script src="semantic.min.js"></script>
+
   <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     </head>
 <body >
   <div class="container">
-  <div class="canvas" id="plot">
+  
+  <div class="ui vertical segment">
+    <div class="ui four column grid">
+      <div class="four column wide row">
+        <div class="two wide column" ></div>
+        <div class= "ten wide column">
+          <div class="canvas" id="plot">
+          </div>
         </div>
-  <!-- <div class="ui vertical segment">
-    <div class="ui stackable left aligned page grid">
-      <div class="row">
-        
-        
+        <div class="four wide column" >
+
+
+          <!-- this needs to get built by angular -->
+          <div class="ui multiple dropdown">
+            <input type="hidden" name="filters">
+            <i class="filter icon"></i>
+            <span class="text">Select communities</span>
+            <div class="menu">
+              <div class="ui icon search input">
+                <i class="search icon"></i>
+                <input type="text" placeholder="Search municipalities...">
+              </div>
+              <div class="divider"></div>
+              <div class="header">
+                <i class="tags icon"></i>
+                Metro Boston
+              </div>
+              <div class="scrolling menu">
+                <div class="item" data-value="important">
+                  <div class="ui red empty circular label"></div>
+                  Boston
+                </div>
+                <div class="item" data-value="announcement">
+                  <div class="ui blue empty circular label"></div>
+                  Cambridge
+                </div>
+                <div class="item" data-value="cannotfix">
+                  <div class="ui black empty circular label"></div>
+                  Brookline
+                </div>
+                <div class="item" data-value="news">
+                  <div class="ui purple empty circular label"></div>
+                  Sommervile
+                </div>
+                <div class="item" data-value="enhancement">
+                  <div class="ui orange empty circular label"></div>
+                  Malden
+                </div>
+                <div class="item" data-value="off-topic">
+                  <div class="ui yellow empty circular label"></div>
+                  Newton
+                </div>
+                <div class="item" data-value="interesting">
+                  <div class="ui pink empty circular label"></div>
+                  Waltham
+                </div>
+                <div class="item" data-value="discussion">
+                  <div class="ui green empty circular label"></div>
+                  Quincy
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
           <div class="ui horizontal divider"></div>
 
         </div>
       </div>
     </div>
     
-  </div> -->
   </div>
+  </div>
+  <!-- ui piece which will go with angular -->
+  <script type="text/javascript">
+
+  $('.ui.dropdown')
+  .dropdown({
+    allowAdditions: true
+  })
+;
+  </script>
   <script src="script.js"></script>
 </body>
 </html>
