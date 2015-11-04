@@ -36,6 +36,7 @@ app.use(require('./lib/appengine-handlers'));
 // app.use( express.methodOverride() );
 // app.use( express.errorHandler({ dumpExceptions: true, showStack: true }));
 app.use(serveStatic('./', {'index': ['index.html', 'index.htm']}))
+app.use(serveStatic('./bower_components/jquery/dist'))
 app.use(serveStatic('./bower_components/semantic-ui/dist'))
 app.use(serveStatic('./lib'))
 app.use(serveStatic('./scripts'))

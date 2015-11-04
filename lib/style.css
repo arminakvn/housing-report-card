@@ -45,3 +45,34 @@ p{
     font-size:10px;
     fill:rgb(180,180,180);
 }
+body{
+  font-size: 16px;
+}
+h1{ font-size:2em;}
+h2{ font-size:1.1em;}
+p{ font-size: .9em;}
+
+/*------------svg--------------*/
+.axis .domain{
+    fill:none
+}
+.axis .tick line{
+    fill:none;
+    stroke:rgb(200,200,200);
+    stroke-width:1px;
+}
+.axis .tick text{
+    fill:rgb(80,80,80);
+    font-size:12px;
+}
+
+.data-point{
+    fill:white;
+    stroke-width:2px;
+    stroke:rgb(150,150,150);
+}
+.data-line{
+    fill:none;
+    stroke-width:2px;
+    stroke:rgb(150,150,150);
+}
