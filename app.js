@@ -38,6 +38,7 @@ app.use(require('./lib/appengine-handlers'));
 app.use(serveStatic('./', {'index': ['index.html', 'index.htm']}))
 app.use(serveStatic('./bower_components/semantic-ui/dist'))
 app.use(serveStatic('./lib'))
+app.use(serveStatic('./scripts'))
 // app.set('view engine', 'ejs');
 app.get('/', function(req, res) {
   // res.status(200).send("Hello, world!");
