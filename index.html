@@ -31,9 +31,17 @@
         </div>
         <div class="four wide column" >
 
-
+          <div class="field">
+          <label>Select communities</label>
+          <div class="ui multiple search selection dropdown">
+            <input type="hidden">
+            <i class="dropdown icon"></i>
+            <input type="text" class="search">
+            <div class="default text">Select...</div>
+          </div>
+        </div>
           <!-- this needs to get built by angular -->
-          <div class="ui multiple dropdown">
+          <!-- <div class="ui multiple dropdown">
             <input type="hidden" name="filters">
             <i class="filter icon"></i>
             <span class="text">Select communities</span>
@@ -82,7 +90,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
 
         </div>
           <div class="ui horizontal divider"></div>
@@ -95,12 +103,22 @@
   </div>
   <!-- ui piece which will go with angular -->
   <script type="text/javascript">
+var url = "/distinctCity";
+$.api.settings.api = {
+  queryTags: '/distinctCity'
+};
+$('.ui.dropdown')
+        .dropdown({
+          allowAdditions: true,
+          apiSettings: {
+            action: 'queryTags'
+          },
+           onChange: function (val) {
+              console.log(val);
+          }
+        })
+      ;
 
-  $('.ui.dropdown')
-  .dropdown({
-    allowAdditions: true
-  })
-;
   </script>
   <script src="script.js"></script>
 </body>

@@ -14,6 +14,7 @@
 */
 "use strict";
 
+var carto = require('cartodb')
 var express = require('express');
 var path = require('path');
 var http = require('http');
@@ -23,6 +24,10 @@ var serveStatic = require('serve-static')
 
 
 var app = express();
+var secret = {
+  "USER" : "arminavn" ,
+  "API_KEY" : "9150413ca8fb81229459d0a5c2947620e42d0940"
+};
 
 /* Include the app engine handlers to respond to start, stop, and health checks. */
 app.use(require('./lib/appengine-handlers'));
@@ -41,7 +46,49 @@ app.use(serveStatic('./bower_components/semantic-ui/dist'))
 app.use(serveStatic('./bower_components/semantic-ui/dist/components'))
 app.use(serveStatic('./lib'))
 app.use(serveStatic('./scripts'))
+
 // app.set('view engine', 'ejs');
+
+app.get('/distinctCity', function(req, res){
+
+  var client = new carto(
+  {
+    user:secret.USER, 
+    api_key:secret.API_KEY
+  });
+
+  var parse = function(err, data) {
+    var parsed = [];
+    data.rows.forEach(function(row){
+      parsed.push(
+      {
+        "name" : row.city,
+        "value" : row.city
+
+      }
+      );
+      
+  });
+
+
+
+
+    res.send({
+      "success": true,
+      "results": parsed
+    });
+  };
+
+  client.on('connect', function() {
+    client
+    .query("select distinct city from warrendata_copy", parse);
+  });
+    
+  client.connect();  
+
+
+})
+
 app.get('/', function(req, res) {
   // res.status(200).send("Hello, world!");
   res.render('index', function(err, html) {
