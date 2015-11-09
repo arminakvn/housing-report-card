@@ -102,24 +102,7 @@
   </div>
   </div>
   <!-- ui piece which will go with angular -->
-  <script type="text/javascript">
-var url = "/distinctCity";
-$.api.settings.api = {
-  queryTags: '/distinctCity'
-};
-$('.ui.dropdown')
-        .dropdown({
-          allowAdditions: true,
-          apiSettings: {
-            action: 'queryTags'
-          },
-           onChange: function (val) {
-              console.log(val);
-          }
-        })
-      ;
-
-  </script>
+  <script src="ui.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

@@ -1,5 +1,27 @@
 (function() {
   // var axisX, axisY, gdpPerCapMax, gdpPerCapMin, height, margin, plot, scaleX, scaleY, width;
+  var AllData;
+  // ui script
+  var url = "/distinctCity";
+$.api.settings.api = {
+  queryTags: '/distinctCity'
+};
+$('.ui.dropdown')
+        .dropdown({
+          allowAdditions: true,
+          apiSettings: {
+            action: 'queryTags'
+          },
+           onChange: function (val) {
+              console.log(val);
+              draw(val);
+          }
+        })
+      ;
+
+      // visualization sctipt
+
+
   var scity,
   indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
   margin = {
@@ -29,9 +51,9 @@ var axisX = d3.svg.axis()
     .ticks(d3.time.year)
     .tickFormat(d3.time.format('%Y'));
 var axisY = d3.svg.axis()
-    .orient('left')
-    .tickSize(-width)
-    .ticks(10);
+    .orient('left');
+    // .tickSize(-width);
+    // .ticks(10);
 
    //line generator
     var line = d3.svg.line()
@@ -45,7 +67,7 @@ var axisY = d3.svg.axis()
     //     .interpolate('basis');
 
 
-var url = "https://arminavn.cartodb.com/api/v2/sql?q=SELECT * FROM warrendata_copy &api_key=9150413ca8fb81229459d0a5c2947620e42d0940";
+var url = "https://arminavn.cartodb.com/api/v2/sql?q=SELECT * FROM warren_yr_town ORDER BY year ASC &api_key=9150413ca8fb81229459d0a5c2947620e42d0940";
 var updateCollection;
 
 updateCollection = $.ajax(url, {
@@ -54,41 +76,45 @@ updateCollection = $.ajax(url, {
   error: function(jqXHR, textStatus, errorThrown) {},
   success: (function(_this) {
     return function(data, textStatus, jqXHR) {
-      scity = ["Berkley"]
-      draw(data.rows, scity);
+      console.log(data);
+      scity = "Hudson"
+      AllData = data;
+      draw(scity);
       return;
     };
   })(this)
 });
 
 
-function draw(rows, scity){
+function draw(city){
+  rows = AllData.rows;
   // console.log("draw data",rows);
 $.when(rows).done((function(_this) {
   return function(rows) {
-    
-      // console.log(rows);
+      scity = city.split(",");
+      console.log(rows);
+      // console.log(scity.split(","));
       data = [];
 
       // parse
       rows.forEach(function(each) {
-        if ((indexOf.call(scity, each.city) >= 0)) {
+        if ((indexOf.call(scity, each.town) >= 0)) {
         data.push(
         {
-          cyear: new Date(each.cyear, 01,01),
-          medsale: +each.medsale,
-          city: each.city
+          year: new Date(each.year, 01,01),
+          medsale: +each.ytdmedsale,
+          city: each.town
         }
         )
         }
       })
       console.log(data);
 
-      data.sort(function(a,b){
-            return b.cyear - a.cyear;
-        })
+      // data.sort(function(a,b){
+      //       return b.year - a.year;
+      //   })
       var nestedData = d3.nest()
-        .key(function(d){return d.cyear})
+        .key(function(d){return d.year})
         .entries(data);
 
     //calculate average fare for each travel date
@@ -102,9 +128,9 @@ $.when(rows).done((function(_this) {
 
         });
 
-        nestedData.sort(function(a,b){
-            return b.date - a.date;
-        })
+        // nestedData.sort(function(a,b){
+        //     return b.date - a.date;
+        // })
 
 
 
@@ -129,7 +155,7 @@ $.when(rows).done((function(_this) {
       // });
 
 
-      scaleX = d3.time.scale().domain([new Date(2005, 01, 01), new Date(2015, 12, 29)]).range([0, width]);
+      scaleX = d3.time.scale().domain([new Date(2000, 01, 01), new Date(2015, 12, 29)]).range([0, width]);
       console.log(new Date(2015, 12, 29));
       scaleY = d3.scale.linear().domain([0, medsaleMax]).range([height, 0]);
    

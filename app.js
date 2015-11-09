@@ -62,8 +62,8 @@ app.get('/distinctCity', function(req, res){
     data.rows.forEach(function(row){
       parsed.push(
       {
-        "name" : row.city,
-        "value" : row.city
+        "name" : row.town,
+        "value" : row.town
 
       }
       );
@@ -81,7 +81,7 @@ app.get('/distinctCity', function(req, res){
 
   client.on('connect', function() {
     client
-    .query("select distinct city from warrendata_copy", parse);
+    .query("select distinct town from warren_yr_town order by town asc", parse);
   });
     
   client.connect();  
