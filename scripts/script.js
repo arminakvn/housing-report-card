@@ -14,7 +14,7 @@ $('.ui.dropdown')
           },
            onChange: function (val) {
               console.log(val);
-              draw(val);
+              // draw(val);
           }
         })
       ;
@@ -57,8 +57,8 @@ var axisY = d3.svg.axis()
 
    //line generator
     var line = d3.svg.line()
-        .x(function(d){return scaleX(new Date(d.date))})
-        .y(function(d){return scaleY(d.avgMedSale)})
+        .x(function(d){return scaleX(new Date(d.year))})
+        .y(function(d){return scaleY(d.medsale)})
         // .interpolate('basis')
     // var area = d3.svg.area()
     //     .x(function(d){return scaleX(d.key)})
@@ -67,7 +67,7 @@ var axisY = d3.svg.axis()
     //     .interpolate('basis');
 
 
-var url = "https://arminavn.cartodb.com/api/v2/sql?q=SELECT * FROM warren_yr_town ORDER BY year ASC &api_key=9150413ca8fb81229459d0a5c2947620e42d0940";
+var url = "https://arminavn.cartodb.com/api/v2/sql?q=SELECT * FROM warren_yr_town WHERE usegrp IN ('1FA') ORDER BY town ASC, year ASC LIMIT 400 &api_key=9150413ca8fb81229459d0a5c2947620e42d0940";
 var updateCollection;
 
 updateCollection = $.ajax(url, {
@@ -78,16 +78,16 @@ updateCollection = $.ajax(url, {
     return function(data, textStatus, jqXHR) {
       console.log(data);
       scity = "Hudson"
-      AllData = data;
-      draw(scity);
+      // AllData = data;
+      draw(data.rows, scity);
       return;
     };
   })(this)
 });
 
 
-function draw(city){
-  rows = AllData.rows;
+function draw(rows, city){
+  // rows = AllData.rows;
   // console.log("draw data",rows);
 $.when(rows).done((function(_this) {
   return function(rows) {
@@ -98,7 +98,7 @@ $.when(rows).done((function(_this) {
 
       // parse
       rows.forEach(function(each) {
-        if ((indexOf.call(scity, each.town) >= 0)) {
+        // if ((indexOf.call(scity, each.town) >= 0)) {
         data.push(
         {
           year: new Date(each.year, 01,01),
@@ -106,43 +106,43 @@ $.when(rows).done((function(_this) {
           city: each.town
         }
         )
-        }
+        // }
       })
-      console.log(data);
+      console.log("data",data);
 
       // data.sort(function(a,b){
       //       return b.year - a.year;
       //   })
       var nestedData = d3.nest()
-        .key(function(d){return d.year})
+        .key(function(d){return d.city})
         .entries(data);
 
     //calculate average fare for each travel date
         nestedData.forEach(function(t){
             console.log("jey",t.key);
 
-            t.date = t.key;
-            t.avgMedSale = d3.mean(t.values, function(quarter){return quarter.medsale});
+            t.city = t.key;
+            t.max = d3.max(t.values, function(quarter){return quarter.medsale});
 
-            console.log("average fare for " + t.key + 'is '+ t.avgMedSale);
+            // console.log("average fare for " + t.key + 'is '+ t.max);
 
         });
 
         // nestedData.sort(function(a,b){
         //     return b.date - a.date;
         // })
-
+    console.log("nestedData", nestedData);
 
 
 
 
       medsaleMin = d3.min(nestedData, function(d) {
         // console.log("d.medsale",d.medsale)
-        return d.avgMedSale;
+        return d.max;
       });
 
       medsaleMax = d3.max(nestedData, function(d) {
-        return d.avgMedSale ;
+        return d.max ;
       });
 
       // dateMin = d3.min(nestedData, function(d) {
@@ -155,7 +155,7 @@ $.when(rows).done((function(_this) {
       // });
 
 
-      scaleX = d3.time.scale().domain([new Date(2000, 01, 01), new Date(2015, 12, 29)]).range([0, width]);
+      scaleX = d3.time.scale().domain([new Date(1999, 12, 28), new Date(2013, 12, 28)]).range([0, width]);
       console.log(new Date(2015, 12, 29));
       scaleY = d3.scale.linear().domain([0, medsaleMax]).range([height, 0]);
    
@@ -177,7 +177,7 @@ $.when(rows).done((function(_this) {
 
 
 
-      nodes = plot
+     /* nodes = plot
         .selectAll('.nodes numberofsales')
         .data(nestedData)
       nodesEnter = nodes
@@ -197,7 +197,7 @@ $.when(rows).done((function(_this) {
         .attr('transform',function(d,i){
         console.log("d, i", d, i);
         // console.log(scaleY(d.medsale))
-            return 'translate(' + scaleX(new Date(d.date)) + ',' + scaleY(d.avgMedSale) + ')';
+            return 'translate(' + scaleX(new Date(d.values.year)) + ',' + scaleY(d.values.medsale) + ')';
         })
 
       nodes.exit().remove();
@@ -211,13 +211,30 @@ $.when(rows).done((function(_this) {
             console.log(scaleX(d.date));
             return 'translate(' + scaleX(new Date(d.date)) + ',' + 0 + ')';
         }
-          )
+          )*/
 
 
+      nestedData.forEach(function(each) {
+        console.log("each", each);
+        plot.append('path').attr('class','data-line')
+        .datum(each.values)
+        .attr('d',line);
+      })
 
       plot.append('path').attr('class','data-line')
         .datum(nestedData)
-        .attr('d',line);
+        .attr('d',function(d){
+          console.log("line d", d)
+          return line(d)
+        });
+      plot.append("text")
+        .attr("transform", "translate(" + (width+3) + "," + scaleY(each.values.ytdmedsale) + ")")
+        .attr("dy", ".35em")
+        .attr("text-anchor", "start")
+        .style("fill", "red")
+        .text(function(d){
+          return d.city;
+        });
 
 return;
   };

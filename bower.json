@@ -17,6 +17,7 @@
     "tests"
   ],
   "dependencies": {
-    "semantic-ui": "latest"
+    "semantic-ui": "latest",
+    "c3": "~0.4.10"
   }
 }

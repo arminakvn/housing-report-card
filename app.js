@@ -43,6 +43,7 @@ app.use(require('./lib/appengine-handlers'));
 app.use(serveStatic('./', {'index': ['index.html', 'index.htm']}))
 app.use(serveStatic('./bower_components/jquery/dist'))
 app.use(serveStatic('./bower_components/semantic-ui/dist'))
+app.use(serveStatic('./bower_components/c3'))
 app.use(serveStatic('./bower_components/semantic-ui/dist/components'))
 app.use(serveStatic('./lib'))
 app.use(serveStatic('./scripts'))
