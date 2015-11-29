@@ -8,7 +8,7 @@ html,body,div,ul,li,svg{
 html,body{
   height: 100%;
   position: relative;
-  background: rgb(242,244,233);
+  /*background: rgb(242,244,233);*/
 }
 
 .container{
@@ -75,4 +75,8 @@ p{ font-size: .9em;}
     fill:none;
     stroke-width:2px;
     stroke:rgb(150,150,150);
+}
+
+.c3-axis-y-label {
+  font-size: 16px;
 }

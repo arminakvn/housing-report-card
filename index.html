@@ -7,20 +7,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
   <!-- Site Properities -->
-  <title>Express - Gcloud - Semantic</title>
-  <link rel="stylesheet" type="text/css" href="bower_components/semantic-ui/dist/semantic.css">
+  <title>HTC</title>
+<!--   <link rel="stylesheet" type="text/css" href="bower_components/semantic-ui/dist/semantic.css">
   <link rel="stylesheet" type="text/css" href="lib/style.css">
-  <link rel="stylesheet" type="text/css" href="bower_components/c3/c3.css">
-  <!--<link rel="stylesheet" type="text/css" href="semantic.min.css">
+  <link rel="stylesheet" type="text/css" href="bower_components/c3/c3.css"> -->
+ <link rel="stylesheet" type="text/css" href="semantic.min.css">
   <link rel="stylesheet" type="text/css" href="c3.css">
-  <link rel="stylesheet" type="text/css" href="style.css">-->
+  <link rel="stylesheet" type="text/css" href="style.css">
 
-<script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+<!-- <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
 <script type="text/javascript" src="bower_components/semantic-ui/dist/semantic.js"></script>
-<script type="text/javascript" src="bower_components/c3/c3.js"></script>
-  <!--<script src="jquery.min.js"></script>
+<script type="text/javascript" src="bower_components/c3/c3.js"></script> -->
+  <script src="jquery.min.js"></script>
   <script src="semantic.min.js"></script>
-  <script src="c3.js"></script>-->
+  <script src="c3.js"></script>
 
   <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     </head>
@@ -28,18 +28,40 @@
   <div class="container">
   
   <div class="ui vertical segment">
-    <div class="ui four column grid">
+    <div class="ui four column centered grid">
       <div class="four column wide row">
-        <div class="two wide column" ></div>
-        <div class= "ten wide column">
+        <div class="four wide centered column"><h1 class="ui header">Housing Report Cards</h1></div>
+        
+      </div>
+      <div class="six column wide centered row">
+        <div class="four wide centered column" >
+          
+          Tracking the <select id="measure_options"  name="measure" class="ui compact dropdown button" >
+          <option value="">Median Single Family Home Sale Prices</option>
+          <option data-id="numsale" value="Single Family Home Sales">Single Family Home Sales</option>
+          <option data-id="medsale" value="Median Single Family Home Sale Prices 2000 to 2015">Median Single Family Home Sale Prices</option>
+          <option data-id="yrround_housing_units" value="Year Round Housing Units 2000, 2010">Year Round Housing Units</option>
+          <option data-id="housing_permits" value="Housing Permits 2000 to 2015">Housing Permits</option>
+        </select> 
+           for <div class="ui hidden divider"></div><select id="legend_options" name="communities" multiple=""  class="ui compact dropdown button">
+            <option value="">Cambridge</option>
+          </select> 
+        </div>
+      </div>
+
+      <div class="four column wide centered row">
+
+        <div class= "ten wide centered column">
+          <h2 id="table-name"></h2>
           <div class="canvas" id="plot">
           </div>
         </div>
-        <div class="four wide column" >
 
-          <select name="communities" multiple="" class="ui fluid dropdown">
+          
+
+          <!-- <select id="legend_options_add" name="communities" multiple="" class="ui fluid dropdown">
  
-</select>
+          </select> -->
 
           <!-- <div class="field">
           <label>Select communities</label>
