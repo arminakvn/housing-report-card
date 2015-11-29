@@ -16,7 +16,6 @@ url_map.set('order_clause', order_clause);
 url_map.set('limit_clause', limit_clause);
 
 
-
 draw_measure_map.set('current_measure', 'medsale')
 draw_measure_map.set('current_cities', 'Cambridge')
 
@@ -37,8 +36,8 @@ var format_axis_map = d3.map({
 
 console.log(metadata_map)
 
-makeLegendCities()
-
+makeLegendCities();
+makeAjaxCall(url_map);
 
 
 $('#measure_options').dropdown(
