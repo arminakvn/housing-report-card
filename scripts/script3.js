@@ -34,6 +34,11 @@ var format_axis_map = d3.map({
   'numsale': d3.format(",")
 })
 
+var sources_map = d3.map({
+  'medsale': 'The Warren Group',
+  'numsale': 'The Warren Group'
+})
+
 console.log(metadata_map)
 
 makeLegendCities();
@@ -248,9 +253,10 @@ base_color = d3.rgb(49, 130, 189);
 
 
 function draw(){
-  var tableName = d3.select('#table-name')
+  var tableName = d3.select('#table-name');
+  var source = d3.select('#source').select('span')
   tableName.transition().style('opacity',0);
-   
+      
 
       chart = c3.generate({
         size: {
@@ -263,6 +269,11 @@ function draw(){
           columns: data_map.get(metadata_map.get(draw_measure_map.get('current_measure'))),
           type: 'bar',
           pattern: ['#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78', '#2ca02c', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5'],
+          onclick: function (d, element) { 
+
+            console.log("click", d, element);
+            // chart.focus(d.id);
+          }
           // labels: {
           //   format: function (v, id, i, j) { return id }
           // }
@@ -271,13 +282,14 @@ function draw(){
             x: {
                 type: 'timeseries',
                 tick: {
-                    format: '%Y'
+                    format: '%Y',
+                    culling: false
                 }
             },
             y: {
               tick: {
                   
-                  format: d3.format("$,")
+                  format: format_axis_map.get(draw_measure_map.get('current_measure')) 
 
               },
               label: {
@@ -299,6 +311,8 @@ function draw(){
       }
       tableName.transition().style('opacity',1);
       tableName.html(layout_map.get('table-name'));
+      source.transition().style('opacity',1);
+      source.html(sources_map.get(draw_measure_map.get('current_measure')));
 // $('#legend_options_add').dropdown({
 //           allowAdditions: true,
 //           onChange: function (val) {
