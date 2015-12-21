@@ -17,7 +17,7 @@ url_map.set('order_clause', order_clause);
 url_map.set('limit_clause', limit_clause);
 
 
-draw_measure_map.set('current_measure', 'medsale')
+draw_measure_map.set('current_measure', 'forecolsure_petitions')
 draw_measure_map.set('current_cities', 'Cambridge')
 
 var metadata_map = d3.map({
@@ -55,8 +55,6 @@ var sources_map = d3.map({
   'foreclosure_deeds': 'The Warren Group',
   'ytdfsnum': 'The Warren Group',
 })
-
-console.log(metadata_map)
 
 makeLegendCities();
 makeAjaxCall(url_map);
