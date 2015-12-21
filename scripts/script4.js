@@ -153,12 +153,12 @@ function makeLegendCities() {
           })
           .on('click', function (id) {
           });
-          d3.select('#legend_options_add').attr('class', 'legend').selectAll('option')
-          .data(legend_cities)
-          .enter().append('option')
-            .attr('data-id', function (id) { return id; })
-            .attr('value', function(id) {return value;})
-            .html(function (id) { return id; })
+//          d3.select('#legend_options_add').attr('class', 'legend').selectAll('option')
+//          .data(legend_cities)
+//          .enter().append('option')
+//            .attr('data-id', function (id) { return id; })
+//            .attr('value', function(id) {return value;})
+//            .html(function (id) { return id; })
         return;
       };
     })(this)
@@ -204,7 +204,7 @@ function makeData(rows) {
     data.push(
     {
       year: new Date(each.year, 01,01),
-      medsale: +each.median_sale_rpice,
+      medsale: +each.median_sale_rpice.toFixed(0),
       numsale: +each.number_of_sales,
       forecolsure_petitions: +each.forecolsure_petitions,
       single_family_units_permitted_imputation_2015_numbers_are_es: +each.single_family_units_permitted_imputation_2015_numbers_are_es,
