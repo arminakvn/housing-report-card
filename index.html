@@ -28,13 +28,15 @@
   <div class="container">
   
   <div class="ui vertical segment">
-    <div class="ui four column centered grid">
+    <div class="ui four column grid">
       <div class="four column wide row">
-        <div class="four wide centered column"><h1 class="ui header">Housing Report Cards</h1></div>
+          <div class="two wide column"></div>
+        <div class="two wide column"><h1 class="ui header">Housing Report Cards</h1></div>
         
       </div>
-      <div class="six column wide centered row">
-        <div class="four wide centered column" >
+      <div class="six column wide row">
+           <div class="two wide column"></div>
+        <div class="ten wide column" >
           
           Tracking the <select id="measure_options"  name="measure" class="ui compact dropdown button" >
           <option value="">Median Single Family Home Sale Prices</option>
@@ -47,27 +49,79 @@
             <option data-id="ytdfsnum " value="Foreclosure Sales">Foreclosure Sales</option>
           
         </select> 
-           for <div class="ui hidden divider"></div><select id="legend_options" name="communities" multiple=""  class="ui compact dropdown button">
+           for <select id="legend_options" name="communities" multiple=""  class="ui compact dropdown button">
             <option value="">Cambridge</option>
           </select> 
         </div>
       </div>
 
-      <div class="four column wide centered row">
-
-        <div class= "ten wide centered column">
+      <div class="four column wide row">
+          <div class="two wide column"></div>
+        <div class= "ten wide column">
 
           <h2 id="table-name"></h2>
 
           <div class="canvas" id="plot">
           </div>
 
+        </div>
+
+        </div>
+        <div class="four column wide row">
+          <div class="three wide column"></div>
+        
+
           <h6 id="source">Source: <span></span></h6>
         </div>
 
-        </div>
+        
+        
+        
+        
+        
           <div class="ui horizontal divider"></div>
+        
+        
+        
+        <div class="six column wide row">
+         <div class="two wide column"></div>
+            <div class="ten wide column" >
+          
+          Comparing the <select id="compare_options"  name="compare" class="ui compact dropdown button" >
+          <option value="">Change in Median Home Value from Previous Year</option>
+          <option data-id="change_in_median_home_value_from_previous_year" value="Change in Median Home Value from Previous Year">Change in Median Home Value from Previous Year</option>
+          <option data-id="change_in_number_of_sales_from_previous_year" value="Change in Number of Sales from Previous Year">Change in Number of Sales from Previous Year</option>
+<!--          <option data-id="yrround_housing_units" value="Year Round Housing Units 2000, 2010">Year Round Housing Units</option>-->
+            <option data-id="change_in_permits_from_previous_year" value="Change in Permits from Previous Year">Change in Permits from Previous Year</option>
+        </select> 
+           for 
+<!--                <div class="ui hidden divider"></div>-->
+                <select id="legend_compare" name="communities" multiple=""  class="ui compact dropdown button">
+            <option value="">Boston</option>
+          </select> 
+        </div>
+      </div>
+        
+         <div class="four column wide row">
+          <div class="two wide column"></div>
+        <div class= "ten wide column">
 
+          <h2 id="table-name2"></h2>
+
+          <div class="canvas" id="plot2">
+          </div>
+
+        </div>
+
+        </div>
+        <div class="four column wide row">
+          <div class="three wide column"></div>
+        
+
+          <h6 id="source2">Source: <span></span></h6>
+        </div>
+        
+        </div>
         </div>
       </div>
     </div>
@@ -77,5 +131,6 @@
   <!-- ui piece which will go with angular -->
   
   <script src="scripts/script4.js"></script>
+<script src="scripts/script4_2.js"></script>
 </body>
 </html>

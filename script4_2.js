@@ -1,89 +1,76 @@
 (function() {
 
-var url_map = d3.map();
-var layout_map = d3.map();
-var draw_measure_map = d3.map();
-var data_map = d3.map();
+var url_map2 = d3.map();
+var layout_map2 = d3.map();
+var draw_measure_map2 = d3.map();
     var data_map2 = d3.map();
-var chart;
-var base_url = "https://arminavn.cartodb.com/api/v2/sql?q=SELECT * FROM housing_report_cards_data " 
-var where_clause = " WHERE usegrp IN ('1FA') " + "AND town ILIKE('Cambridge')" + "AND level ILIKE('Town')"
-var order_clause = " ORDER BY town ASC, year ASC "
-var limit_clause = ""
+var chart2;
+var base_url2= "https://arminavn.cartodb.com/api/v2/sql?q=SELECT * FROM housing_report_cards_data " 
+var where_clause2 = " WHERE usegrp IN ('1FA') " + "AND town ILIKE('Cambridge')" + "AND level ILIKE('Town')"
+var order_clause2 = " ORDER BY town ASC, year ASC "
+var limit_clause2 = ""
 var api_key = " &api_key=9150413ca8fb81229459d0a5c2947620e42d0940"
 
-url_map.set('where_clause', where_clause);
-url_map.set('order_clause', order_clause);
-url_map.set('limit_clause', limit_clause);
+url_map2.set('where_clause', where_clause2);
+url_map2.set('order_clause', order_clause2);
+url_map2.set('limit_clause', limit_clause2);
 
 
-draw_measure_map.set('current_measure', 'medsale')
-draw_measure_map.set('current_cities', 'Cambridge')
+draw_measure_map2.set('current_measure', 'change_in_median_home_value_from_previous_year')
+draw_measure_map2.set('current_cities', 'Boston')
 
-var metadata_map = d3.map({
-  'medsale': 'allData1',
-  'numsale': 'allData2',
-  'forecolsure_petitions':'allData3',
-  'single_family_units_permitted_imputation_2015_numbers_are_es':'allData4',
-  'foreclosure_deeds':'allData5',
-  'ytdfsnum':'allData6'
+var metalabel_map2 = d3.map({
+  'Change in Median Home Value from Previous Year': 'change_in_median_home_value_from_previous_year',
+  'Change in Number of Sales from Previous Year': 'change_in_number_of_sales_from_previous_year',
+  'Change in Permits from Previous Year': 'change_in_permits_from_previous_year',
 })
 
-var metalabel_map = d3.map({
-  'Single Family Home Sales': 'numsale',
-  'Median Single Family Home Sale Prices': 'medsale',
-  'Forecolsure Petitions': 'forecolsure_petitions',
-  'Housing Permits':'single_family_units_permitted_imputation_2015_numbers_are_es',
-  'Foreclosure Deeds':'foreclosure_deeds',
-  'Foreclosure Sales':'ytdfsnum'
+
+var allDataKeysList2 = [
+        'change_in_median_home_value_from_previous_year',
+        'change_in_number_of_sales_from_previous_year',
+        'change_in_permits_from_previous_year'
+    ]
+var format_axis_map2 = d3.map({
+  'change_in_median_home_value_from_previous_year': d3.format("%,"),
+  'change_in_number_of_sales_from_previous_year': d3.format("%,"),
+  'change_in_permits_from_previous_year': d3.format("%,")
 })
 
-var format_axis_map = d3.map({
-  'medsale': d3.format("$,"),
-  'numsale': d3.format(","),
-  'forecolsure_petitions': d3.format(","),
-  'single_family_units_permitted_imputation_2015_numbers_are_es': d3.format(","),
-  'foreclosure_deeds': d3.format(","),
-  'ytdfsnum': d3.format(",")
+var sources_map2 = d3.map({
+  'change_in_median_home_value_from_previous_year': 'The Warren Group',
+  'change_in_number_of_sales_from_previous_year': 'The Warren Group',
+  'change_in_permits_from_previous_year': 'U.S. Census'
 })
 
-var sources_map = d3.map({
-  'medsale': 'The Warren Group',
-  'numsale': 'The Warren Group',
-  'forecolsure_petitions': 'The Warren Group',
-  'single_family_units_permitted_imputation_2015_numbers_are_es': 'U.S. Census',
-  'foreclosure_deeds': 'The Warren Group',
-  'ytdfsnum': 'The Warren Group',
-})
+console.log(metadata_map2)
 
-console.log(metadata_map)
-
-makeLegendCities();
-makeAjaxCall(url_map);
+makeLegendCities2();
+makeAjaxCall2(url_map2);
 
 
-$('#measure_options').dropdown(
+$('#compare_options').dropdown(
       {
           onChange: function (value, id) {
             
-            chart.unload(draw_measure_map.get('current_cities'));
+            chart2.unload(draw_measure_map2.get('current_cities'));
             
 
-            layout_map.set('table-name', value)
+            layout_map2.set('table-name', value)
             console.log('val',value, 'id', id)
-            draw_measure_map.set('current_measure', metalabel_map.get(id))
+            draw_measure_map2.set('current_measure', metalabel_map2.get(id))
             // chart.hide(draw_measure_map.get('current_cities'));
             // chart.show(draw_measure_map.get('current_cities'));
-            chart.flow({
-              columns: data_map.get(metadata_map.get(metalabel_map.get(id))),
+            chart2.flow({
+              columns: data_map2.get(metadata_map2.get(metalabel_map2.get(id))),
                 duration: 10,
                 length: 0,
                 done: function () {
-                  chart.hide(draw_measure_map.get('current_cities'));
+                  chart2.hide(draw_measure_map2.get('current_cities'));
 
-                  chart.flush();
-                  chart.show(draw_measure_map.get('current_cities'));
-                  draw();
+                  chart2.flush();
+                  chart2.show(draw_measure_map2.get('current_cities'));
+                  draw2();
                   
                   // chart.unload()
                 }
@@ -91,7 +78,7 @@ $('#measure_options').dropdown(
 
             // chart.load(data_map.get(metadata_map.get(draw_measure_map.get('current_measure'))))
 
-            console.log(data_map.get(metadata_map.get(draw_measure_map.get('current_measure'))))
+            console.log(data_map2.get(metadata_map.2get(draw_measure_map2.get('current_measure'))))
             
             }
             
@@ -100,11 +87,11 @@ $('#measure_options').dropdown(
     
     
 
-function makeLegendCities() {
-  $('#legend_options').dropdown({
+function makeLegendCities2() {
+  $('#compare_options').dropdown({
           allowAdditions: true,
           onChange: function (val) {
-            draw_measure_map.set('current_cities', val)
+            draw_measure_map2.set('current_cities', val)
             var OrStates =[];
             val.forEach(function(townName){
               startStr =  "town ILIKE('" + townName + "') OR";
@@ -115,8 +102,8 @@ function makeLegendCities() {
               orStrings = orStrings + " " +  ors;
             })
             orStrings = orStrings.slice(0, -2)
-            url_map.set('where_clause', " WHERE usegrp IN ('1FA') AND ( "+orStrings+" )")
-            makeAjaxCall(url_map)
+            url_map2.set('where_clause', " WHERE usegrp IN ('1FA') AND ( "+orStrings+" )")
+            makeAjaxCall2(url_map2)
           }
   });
   var legend_cities_data = [];
@@ -142,7 +129,7 @@ function makeLegendCities() {
           legend_cities.push(each.key)
         }
           )
-        d3.select('#legend_options').attr('class', 'legend').selectAll('option')
+        d3.select('#legend_compare').attr('class', 'legend').selectAll('option')
           .data(legend_cities)
         .enter().append('option')
           .attr('data-id', function (id) { return id; })
@@ -155,7 +142,7 @@ function makeLegendCities() {
           })
           .on('click', function (id) {
           });
-          d3.select('#legend_options_add').attr('class', 'legend').selectAll('option')
+          d3.select('#legend_compares_add').attr('class', 'legend').selectAll('option')
           .data(legend_cities)
           .enter().append('option')
             .attr('data-id', function (id) { return id; })
@@ -172,9 +159,9 @@ function makeLegendCities() {
 
 
 
-function makeAjaxCall(urlMap) {
-  var url = base_url + urlMap.get('where_clause') + urlMap.get('order_clause') + urlMap.get('limit_clause') + api_key
-  console.log(urlMap)
+function makeAjaxCall2(urlMap2) {
+  var url = base_url2 + urlMap2.get('where_clause') + urlMap2.get('order_clause') + urlMap2.get('limit_clause') + api_key
+  console.log(urlMap2)
   // var url = "https://arminavn.cartodb.com/api/v2/sql?q=SELECT * FROM warren_yr_town WHERE usegrp IN ('1FA') ORDER BY town ASC, year ASC LIMIT 1000&api_key=9150413ca8fb81229459d0a5c2947620e42d0940";
   var updateCollection;
   updateCollection = $.ajax(url, {
@@ -185,8 +172,8 @@ function makeAjaxCall(urlMap) {
       return function(data, textStatus, jqXHR) {
         
         // AllData = data;
-        makeData(data.rows)
-        draw();
+        makeData2(data.rows)
+        draw2();
         return;
       };
     })(this)
@@ -198,7 +185,7 @@ function makeAjaxCall(urlMap) {
 
 
 
-function makeData(rows) {
+function makeData2(rows) {
   data = [];
 
   rows.forEach(function(each) {
@@ -206,12 +193,9 @@ function makeData(rows) {
     data.push(
     {
       year: new Date(each.year, 01,01),
-      medsale: +each.median_sale_rpice,
-      numsale: +each.number_of_sales,
-      forecolsure_petitions: +each.forecolsure_petitions,
-      single_family_units_permitted_imputation_2015_numbers_are_es: +each.single_family_units_permitted_imputation_2015_numbers_are_es,
-      foreclosure_deeds: +each.foreclosure_deeds,
-      ytdfsnum: +each.ytdfsnum,
+      change_in_median_home_value_from_previous_year: +each.change_in_median_home_value_from_previous_year,
+      change_in_number_of_sales_from_previous_year: +each.change_in_number_of_sales_from_previous_year,
+      change_in_permits_from_previous_year: +each.change_in_number_of_sales_from_previous_year,
 
       city: each.town
     }
@@ -227,7 +211,7 @@ function makeData(rows) {
 //calculate average fare for each travel date
     nestedData.forEach(function(t){
         t.city = t.key;
-        t.max = d3.max(t.values, function(quarter){return quarter.medsale});
+        t.max = d3.max(t.values, function(quarter){return quarter.change_in_median_home_value_from_previous_year});
 
     });
 
@@ -248,12 +232,9 @@ base_color = d3.rgb(49, 130, 189);
     
    var allDataList = [];
    var allDataKeysList = [
-        'medsale',
-        'numsale',
-        'forecolsure_petitions',
-        'single_family_units_permitted_imputation_2015_numbers_are_es',
-        'foreclosure_deeds',
-        'ytdfsnum'
+        'change_in_median_home_value_from_previous_year',
+        'change_in_number_of_sales_from_previous_year',
+        'change_in_permits_from_previous_year'
     ]
    var counterID = 1;
    allDataKeysList.forEach(function(eachKey){       
@@ -271,7 +252,7 @@ base_color = d3.rgb(49, 130, 189);
             new Date(2004, 01,01), new Date(2005, 01,01),new Date(2006, 01,01),new Date(2007, 01,01),new Date(2008, 01,01),
             new Date(2009, 01,01), new Date(2010, 01,01),new Date(2011, 01,01),new Date(2012, 01,01),new Date(2013, 01,01),new Date(2014, 01,01),new Date(2015, 01,01)]);
         allDataList.push(_allData);
-       data_map.set('allData'+counterID, _allData);
+       data_map2.set('allData'+counterID, _allData);
        counterID = counterID + 1;
         
    })
@@ -322,21 +303,21 @@ base_color = d3.rgb(49, 130, 189);
 
 
 
-function draw(){
+function draw2(){
   var tableName = d3.select('#table-name');
   var source = d3.select('#source').select('span')
   tableName.transition().style('opacity',0);
       
 
-      chart = c3.generate({
+      chart2 = c3.generate({
         size: {
           width: 1000,
           height: 550
         },
-        bindto: "#plot",
+        bindto: "#plot2",
         data: {
           x: 'year',
-          columns: data_map.get(metadata_map.get(draw_measure_map.get('current_measure'))),
+          columns: data_map2.get(metadata_map2.get(draw_measure_map2.get('current_measure'))),
           type: 'bar',
           pattern: ['#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78', '#2ca02c', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5'],
           onclick: function (d, element) { 
@@ -348,7 +329,7 @@ function draw(){
           //   format: function (v, id, i, j) { return id }
           // }
         },
-        axis: {
+        axis: {2
             x: {
                 type: 'timeseries',
                 tick: {
@@ -359,7 +340,7 @@ function draw(){
             y: {
               tick: {
                   
-                  format: format_axis_map.get(draw_measure_map.get('current_measure')) 
+                  format: format_axis_map2.get(draw_measure_map2.get('current_measure')) 
 
               },
               label: {
@@ -377,12 +358,12 @@ function draw(){
           }
 });
       function toggle(id) {
-          chart.toggle(id);
+          chart2.toggle(id);
       }
       tableName.transition().style('opacity',1);
       tableName.html(layout_map.get('table-name'));
       source.transition().style('opacity',1);
-      source.html(sources_map.get(draw_measure_map.get('current_measure')));
+      source.html(sources_map2.get(draw_measure_map2.get('current_measure')));
 
 
 
