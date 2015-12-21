@@ -6,7 +6,7 @@ var draw_measure_map2 = d3.map();
     var data_map2 = d3.map();
 var chart2;
 var base_url2= "https://arminavn.cartodb.com/api/v2/sql?q=SELECT * FROM housing_report_cards_data " 
-var where_clause2 = " WHERE usegrp IN ('1FA') " + "AND town ILIKE('Cambridge')" + "AND level ILIKE('Town')"
+var where_clause2 = " WHERE usegrp IN ('1FA') " + "AND town ILIKE('Cambridge')" + "AND level ILIKE('Town')" + "AND year >= 2001 "
 var order_clause2 = " ORDER BY town ASC, year ASC "
 var limit_clause2 = ""
 var api_key = " &api_key=9150413ca8fb81229459d0a5c2947620e42d0940"
@@ -115,7 +115,7 @@ function makeLegendCities2() {
   });
   var legend_cities_data = [];
   var legend_cities = []
-  var url = "https://arminavn.cartodb.com/api/v2/sql?q=SELECT * FROM housing_report_cards_data WHERE usegrp IN ('1FA') ORDER BY town ASC, year ASC &api_key=9150413ca8fb81229459d0a5c2947620e42d0940";
+  var url = "https://arminavn.cartodb.com/api/v2/sql?q=SELECT * FROM housing_report_cards_data WHERE usegrp IN ('1FA') AND year >= 2001 ORDER BY town ASC, year ASC &api_key=9150413ca8fb81229459d0a5c2947620e42d0940";
   var updateCollection;
   updateCollection = $.ajax(url, {
     type: 'GET',
@@ -255,7 +255,7 @@ base_color = d3.rgb(49, 130, 189);
             _data.unshift(each.city)
             _allData2.push(_data);
         })
-        _allData2.unshift(['year', new Date(2000, 01,01),new Date(2001, 01,01),new Date(2002, 01,01),new Date(2003, 01,01),
+        _allData2.unshift(['year', new Date(2001, 01,01),new Date(2002, 01,01),new Date(2003, 01,01),
             new Date(2004, 01,01), new Date(2005, 01,01),new Date(2006, 01,01),new Date(2007, 01,01),new Date(2008, 01,01),
             new Date(2009, 01,01), new Date(2010, 01,01),new Date(2011, 01,01),new Date(2012, 01,01),new Date(2013, 01,01),new Date(2014, 01,01),new Date(2015, 01,01)]);
         allDataList2.push(_allData2);
