@@ -311,7 +311,7 @@ base_color = d3.rgb(49, 130, 189);
        _year_to = yrs[yrs.length-1]; 
        _value_to = vals[vals.length-1]
        _value_compare = (_value_to - _value_from)/_value_from
-       if (_value_compare != NaN) {
+       if (_value_compare != undefined) {
        _years = yearFormat(new Date(_year_from)) + ' to ' + yearFormat(new Date(_year_to));
        _years_values_compare = d3.entries({years: _years, value_compare: _value_compare});
 //       console.log('_value_compare',_years_values_compare)
@@ -330,11 +330,12 @@ base_color = d3.rgb(49, 130, 189);
        
        _allData2 = [];
        _allYears2 = [];
-       _compare_data2 = [];
+       
        _compare_years2 = [];
        _key = eachKey;
        
         nestedData.forEach(function(each) {
+            _compare_data2 = [];
             _data =   each.values.map(function(d) {
                 _val = d[_key];
 //                console.log("val", _val);
@@ -382,14 +383,14 @@ function draw2(){
 
       chart2 = c3.generate({
         size: {
-          width: 1000,
-          height: 550
+          width: 700,
+          height: 350
         },
         bindto: "#plot2",
         data: {
           x: 'years',
           columns: data_map2.get(metadata_map2.get(draw_measure_map2.get('current_measure'))),
-          type: 'step',
+          type: 'bar', //'area-step',
           pattern: ['#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78', '#2ca02c', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5'],
           onclick: function (d, element) { 
 
@@ -399,6 +400,16 @@ function draw2(){
           // labels: {
           //   format: function (v, id, i, j) { return id }
           // }
+        },
+        grid: {
+            x: {
+                show: false
+            },
+            y: {
+                lines: [
+                    {value: 0, text: '0% - No change'}
+                ]
+            }
         },
         axis: {
             x: {
@@ -418,7 +429,8 @@ function draw2(){
                       show: false,
                       text: '',
                       position: 'outer-middle'
-                    }
+                    },
+              lines: [{value: 0}]
 
             }
               
@@ -428,9 +440,13 @@ function draw2(){
               position: 'bottom'
           }
 });
+    
+    // updating the color schem based on the other chart, making sure same municipalities are in same colors
+    chart2.data.colors(chart1Colors)
       function toggle(id) {
           chart2.toggle(id);
       }
+    chart2Colors = chart2.data.colors();
       tableName.transition().style('opacity',1);
       tableName.html(layout_map2.get('table-name'));
       source.transition().style('opacity',1);

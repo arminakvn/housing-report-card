@@ -56,6 +56,8 @@ var sources_map = d3.map({
   'ytdfsnum': 'The Warren Group',
 })
 
+
+
 makeLegendCities();
 makeAjaxCall(url_map);
 
@@ -328,8 +330,8 @@ function draw(){
 
       chart = c3.generate({
         size: {
-          width: 1000,
-          height: 550
+          width: 750,
+          height: 350
         },
         bindto: "#plot",
         data: {
@@ -346,10 +348,23 @@ function draw(){
           //   format: function (v, id, i, j) { return id }
           // }
         },
+          grid: {
+            x: {
+                show: true
+            },
+            y: {
+                lines: [
+                    {value: 0, text: ''}
+                ]
+            }
+        },
         axis: {
             x: {
                 type: 'timeseries',
                 tick: {
+//                     centered: true,
+//                    fit: true,
+//                    outer: false,
                     format: '%Y',
                     culling: false
                 }
@@ -381,8 +396,11 @@ function draw(){
       tableName.html(layout_map.get('table-name'));
       source.transition().style('opacity',1);
       source.html(sources_map.get(draw_measure_map.get('current_measure')));
-
-
+    
+    chart.data.colors(chart2Colors);
+    chart1Colors = chart.data.colors()
+    
+console.log('colors', chart.data.colors())
 
 }
   // var explainable = window.explainable;
