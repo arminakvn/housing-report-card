@@ -49,6 +49,7 @@
             <option data-id="ytdfsnum " value="Foreclosure Sales">Foreclosure Sales</option>
           
         </select> 
+            <div class="ui hidden divider"></div>
            for <select id="legend_options" name="communities" multiple=""  class="ui compact dropdown button">
             <option value="">Cambridge</option>
           </select> 
@@ -88,11 +89,19 @@
             <div class="ten wide column" >
           
           Comparing the <select id="compare_options"  name="compare" class="ui compact dropdown button" >
+<!--
           <option value="">Change in Median Home Value from Previous Year</option>
           <option data-id="change_in_median_home_value_from_previous_year" value="Change in Median Home Value from Previous Year">Change in Median Home Value from Previous Year</option>
           <option data-id="change_in_number_of_sales_from_previous_year" value="Change in Number of Sales from Previous Year">Change in Number of Sales from Previous Year</option>
-<!--          <option data-id="yrround_housing_units" value="Year Round Housing Units 2000, 2010">Year Round Housing Units</option>-->
             <option data-id="change_in_permits_from_previous_year" value="Change in Permits from Previous Year">Change in Permits from Previous Year</option>
+--><option value="">Forecolsure Petitions</option>
+          <option data-id="numsale" value="Single Family Home Sales">Single Family Home Sales</option>
+          <option data-id="medsale" value="Median Single Family Home Sale Prices 2000 to 2015">Median Single Family Home Sale Prices</option>
+<!--          <option data-id="yrround_housing_units" value="Year Round Housing Units 2000, 2010">Year Round Housing Units</option>-->
+            <option data-id="single_family_units_permitted_imputation_2015_numbers_are_es" value="Housing Permits 2000 to 2015">Housing Permits</option>
+        <option data-id="forecolsure_petitions" value="Forecolsure Petitions">Forecolsure Petitions</option>
+            <option data-id="foreclosure_deeds " value="Foreclosure Deeds">Foreclosure Deeds</option>
+            <option data-id="ytdfsnum " value="Foreclosure Sales">Foreclosure Sales</option>
         </select> from <select id="compare_year_from"  name="compare_year_from" class="ui compact dropdown button" >
                     <option value="">2005</option>
                 <option data-id="2000" value="2000">2000</option>
@@ -116,8 +125,9 @@
                  to <select id="compare_year_to"  name="compare_year_to" class="ui compact dropdown button" >
                 <option value="">2015</option>
                 </select>
-           for 
-<!--                <div class="ui hidden divider"></div>-->
+                <div class="ui hidden divider"></div>
+           for  
+                
                 <select id="legend_compare" name="communities" multiple=""  class="ui compact dropdown button">
             <option value="">Boston</option>
           </select> 

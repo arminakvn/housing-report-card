@@ -21,25 +21,29 @@ url_map2.set('order_clause', order_clause2);
 url_map2.set('limit_clause', limit_clause2);
 
 
-draw_measure_map2.set('current_measure', 'change_in_median_home_value_from_previous_year')
+draw_measure_map2.set('current_measure', 'medsale')
 draw_measure_map2.set('current_cities', 'Boston')
 draw_measure_map2.set('current_compare_from', '2005')
 draw_measure_map2.set('current_compare_to', '2015')
 
+
+
 var metadata_map2 = d3.map({
-  'change_in_median_home_value_from_previous_year': 'allData1',
-  'change_in_number_of_sales_from_previous_year': 'allData2',
-  'change_in_permits_from_previous_year':'allData3'
-})
-
-
-var metalabel_map2 = d3.map({
   'medsale': 'allData1',
   'numsale': 'allData2',
-//  'forecolsure_petitions':'allData3',
+  'forecolsure_petitions':'allData3',
   'single_family_units_permitted_imputation_2015_numbers_are_es':'allData4',
   'foreclosure_deeds':'allData5',
   'ytdfsnum':'allData6'
+})
+
+var metalabel_map2 = d3.map({
+  'Single Family Home Sales': 'numsale',
+  'Median Single Family Home Sale Prices': 'medsale',
+  'Forecolsure Petitions': 'forecolsure_petitions',
+  'Housing Permits':'single_family_units_permitted_imputation_2015_numbers_are_es',
+  'Foreclosure Deeds':'foreclosure_deeds',
+  'Foreclosure Sales':'ytdfsnum'
 })
 
 
@@ -52,15 +56,20 @@ var allDataKeysList2 = [
         'ytdfsnum'
     ]
 var format_axis_map2 = d3.map({
-  'change_in_median_home_value_from_previous_year': d3.format("%,"),
-  'change_in_number_of_sales_from_previous_year': d3.format("%,"),
-  'change_in_permits_from_previous_year': d3.format("%,")
+   'medsale': d3.format("$,"),
+  'numsale': d3.format(","),
+  'forecolsure_petitions': d3.format(","),
+  'single_family_units_permitted_imputation_2015_numbers_are_es': d3.format(","),
+  'foreclosure_deeds': d3.format(","),
+  'ytdfsnum': d3.format(",")
 })
-
 var sources_map2 = d3.map({
-  'change_in_median_home_value_from_previous_year': 'The Warren Group',
-  'change_in_number_of_sales_from_previous_year': 'The Warren Group',
-  'change_in_permits_from_previous_year': 'U.S. Census'
+    'medsale': 'The Warren Group',
+    'numsale': 'The Warren Group',
+    'forecolsure_petitions': 'The Warren Group',
+    'single_family_units_permitted_imputation_2015_numbers_are_es': 'U.S. Census',
+    'foreclosure_deeds': 'The Warren Group',
+    'ytdfsnum': 'The Warren Group',
 })
 
 
@@ -74,6 +83,7 @@ $('#compare_options').dropdown(
             chart2.unload(draw_measure_map2.get('current_cities'));
             layout_map2.set('table-name', value)
             draw_measure_map2.set('current_measure', metalabel_map2.get(id))
+            console.log(draw_measure_map2)
             chart2.flow({
               columns: data_map2.get(metadata_map2.get(metalabel_map2.get(id))),
                 duration: 10,
@@ -158,8 +168,10 @@ function makeLegendCities2() {
 $('#compare_year_to').dropdown({
           allowAdditions: false,
           onChange: function (val) {
-            draw_measure_map2.set('current_compare_to', val)
-            andStrings = 'year >=' + draw_measure_map2.get('current_compare_from') + ' AND year <' + val + ' ';
+              console.log(val)
+              year_fix = Number(val) + 1;
+            draw_measure_map2.set('current_compare_to', year_fix)
+            andStrings = 'year >=' + draw_measure_map2.get('current_compare_from') + ' AND year <' + year_fix + ' ';
               url_map2.set('where_clause_years', " AND "+andStrings)
             console.log('url_map2',url_map2)
             makeAjaxCall2(url_map2)
@@ -257,6 +269,12 @@ function makeData2(rows) {
     data.push(
     {
       year: new Date(each.year, 01,01),
+      medsale: +each.median_sale_rpice.toFixed(0),
+      numsale: +each.number_of_sales,
+      forecolsure_petitions: +each.forecolsure_petitions,
+      single_family_units_permitted_imputation_2015_numbers_are_es: +each.single_family_units_permitted_imputation_2015_numbers_are_es,
+      foreclosure_deeds: +each.foreclosure_deeds,
+      ytdfsnum: +each.ytdfsnum,
       change_in_median_home_value_from_previous_year: +each.change_in_median_home_value_from_previous_year,
       change_in_number_of_sales_from_previous_year: +each.change_in_number_of_sales_from_previous_year,
       change_in_permits_from_previous_year: +each.change_in_number_of_sales_from_previous_year,
@@ -295,13 +313,13 @@ base_color = d3.rgb(49, 130, 189);
     
     
    
-   var allDataKeysList2 = [draw_measure_map2.get('current_measure')]
+//   var allDataKeysList2 = [draw_measure_map2.get('current_measure')]
 //       [
 //        'change_in_median_home_value_from_previous_year',
 //        'change_in_number_of_sales_from_previous_year',
 //        'change_in_permits_from_previous_year'
 //    ]
-   
+   console.log("allDataKeysList2",allDataKeysList2)
    var yearFormat = d3.time.format("%Y");
    function calcChangeInCompare(vals, yrs) {
        
@@ -309,9 +327,9 @@ base_color = d3.rgb(49, 130, 189);
        _value_from = vals[0];
        _year_from = yrs[0];
        _year_to = yrs[yrs.length-1]; 
-       _value_to = vals[vals.length-1]
+       _value_to = vals[vals.length-1];
        _value_compare = (_value_to - _value_from)/_value_from
-       if (_value_compare != undefined) {
+       if (_value_compare != undefined && _value_compare != Infinity) {
        _years = yearFormat(new Date(_year_from)) + ' to ' + yearFormat(new Date(_year_to));
        _years_values_compare = d3.entries({years: _years, value_compare: _value_compare});
 //       console.log('_value_compare',_years_values_compare)
@@ -422,7 +440,7 @@ function draw2(){
             y: {
               tick: {
                   
-                  format: format_axis_map2.get(draw_measure_map2.get('current_measure')) 
+                  format:d3.format('%,')// format_axis_map2.get(draw_measure_map2.get('current_measure')) 
 
               },
               label: {
