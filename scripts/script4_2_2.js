@@ -83,19 +83,20 @@ $('#compare_options').dropdown(
             chart2.unload(draw_measure_map2.get('current_cities'));
             layout_map2.set('table-name', value)
             draw_measure_map2.set('current_measure', metalabel_map2.get(id))
-            console.log(draw_measure_map2)
-            chart2.flow({
-              columns: data_map2.get(metadata_map2.get(metalabel_map2.get(id))),
-                duration: 10,
-                length: 0,
-                done: function () {
-                  chart2.hide(draw_measure_map2.get('current_cities'));
-
-                  chart2.flush();
-                  chart2.show(draw_measure_map2.get('current_cities'));
-                  draw2();
-                }
-              })
+//            console.log("draw_measure_map2",draw_measure_map2)
+//            chart2.flow({
+//              columns: data_map2.get(metadata_map2.get(metalabel_map2.get(id))),
+//                duration: 10,
+//                length: 0,
+//                done: function () {
+//                  chart2.hide(draw_measure_map2.get('current_cities'));
+//
+//                  chart2.flush();
+//                  chart2.show(draw_measure_map2.get('current_cities'));
+//                  draw2();
+//                }
+//              })
+            makeAjaxCall2(url_map2)
 
 
             
@@ -345,12 +346,12 @@ base_color = d3.rgb(49, 130, 189);
    var counterID = 1;
     allDataList2 = [];
    allDataKeysList2.forEach(function(eachKey){       
-       
+       console.log("eachKey",eachKey)
        _allData2 = [];
        _allYears2 = [];
        
        _compare_years2 = [];
-       _key = eachKey;
+       _key = draw_measure_map2.get('current_measure');
        
         nestedData.forEach(function(each) {
             _compare_data2 = [];
