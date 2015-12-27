@@ -6,11 +6,10 @@ var draw_measure_map = d3.map();
 var data_map = d3.map();
     var data_map2 = d3.map();
 var chart;
-var base_url = "https://arminavn.cartodb.com/api/v2/sql?q=SELECT * FROM housing_report_cards_data " 
+var base_url = "SELECT * FROM {table} " 
 var where_clause = " WHERE usegrp IN ('1FA') " + "AND town ILIKE('Cambridge')" + "AND level ILIKE('Town')"
 var order_clause = " ORDER BY town ASC, year ASC "
 var limit_clause = ""
-var api_key = " &api_key=9150413ca8fb81229459d0a5c2947620e42d0940"
 
 url_map.set('where_clause', where_clause);
 url_map.set('order_clause', order_clause);
@@ -121,7 +120,7 @@ function makeLegendCities() {
   });
   var legend_cities_data = [];
   var legend_cities = []
-  var url = "https://arminavn.cartodb.com/api/v2/sql?q=SELECT * FROM housing_report_cards_data WHERE usegrp IN ('1FA') ORDER BY town ASC, year ASC &api_key=9150413ca8fb81229459d0a5c2947620e42d0940";
+  var url = "/queryData/" + "SELECT * FROM {table} WHERE usegrp IN ('1FA') AND year >= 2001 ORDER BY town ASC, year ASC";
   var updateCollection;
   updateCollection = $.ajax(url, {
     type: 'GET',
@@ -129,7 +128,7 @@ function makeLegendCities() {
     error: function(jqXHR, textStatus, errorThrown) {},
     success: (function(_this) {
       return function(data, textStatus, jqXHR) {
-        data.rows.forEach(function(each){
+        data.results.forEach(function(each){
           legend_cities_data.push({
             city: each.town
           })
@@ -173,9 +172,7 @@ function makeLegendCities() {
 
 
 function makeAjaxCall(urlMap) {
-  var url = base_url + urlMap.get('where_clause') + urlMap.get('order_clause') + urlMap.get('limit_clause') + api_key
-  console.log(urlMap)
-  // var url = "https://arminavn.cartodb.com/api/v2/sql?q=SELECT * FROM warren_yr_town WHERE usegrp IN ('1FA') ORDER BY town ASC, year ASC LIMIT 1000&api_key=9150413ca8fb81229459d0a5c2947620e42d0940";
+  var url = '/queryData/' +base_url + urlMap.get('where_clause') + urlMap.get('order_clause') + urlMap.get('limit_clause')
   var updateCollection;
   updateCollection = $.ajax(url, {
     type: 'GET',
@@ -185,7 +182,7 @@ function makeAjaxCall(urlMap) {
       return function(data, textStatus, jqXHR) {
         
         // AllData = data;
-        makeData(data.rows)
+        makeData(data.results)
         draw();
         return;
       };
@@ -202,7 +199,6 @@ function makeData(rows) {
   data = [];
 
   rows.forEach(function(each) {
-    // if ((indexOf.call(scity, each.town) >= 0)) {
     data.push(
     {
       year: new Date(each.year, 01,01),
@@ -223,16 +219,11 @@ function makeData(rows) {
   var nestedData = d3.nest()
     .key(function(d){return d.city})
     .entries(data);
-
-//calculate average fare for each travel date
     nestedData.forEach(function(t){
         t.city = t.key;
         t.max = d3.max(t.values, function(quarter){return quarter.medsale});
 
     });
-
-
-
 
   medsaleMin = d3.min(nestedData, function(d) {
 
@@ -244,8 +235,6 @@ function makeData(rows) {
   });
 
 base_color = d3.rgb(49, 130, 189);
-    
-    
    var allDataList = [];
    var allDataKeysList = [
         'medsale',
@@ -276,45 +265,8 @@ base_color = d3.rgb(49, 130, 189);
         
    })
  
-//  nestedData.forEach(function(each) {
-//      data = each.values.map(function(d) {return d.medsale;})
-//      data2 = each.values.map(function(d) {return d.numsale;})    
-//      data3 = each.values.map(function(d) {return d.forecolsure_petitions;})    
-//      data4 = each.values.map(function(d) {return d.single_family_units_permitted_imputation_2015_numbers_are_es;})    
-//      data5 = each.values.map(function(d) {return d.foreclosure_deeds;})    
-//      data6 = each.values.map(function(d) {return d.ytdfsnum;})    
-//      data.unshift(each.city)
-//      data2.unshift(each.city)
-//      data3.unshift(each.city)
-//      data4.unshift(each.city)
-//      data5.unshift(each.city)
-//      data6.unshift(each.city)
-//      allData.push(data);
-//      allData2.push(data2);
-//      allData3.push(data3);
-//      allData4.push(data4);
-//      allData5.push(data5);
-//      allData6.push(data6);
-//    
-//  })
-//  allData.unshift(['year', new Date(2000, 01,01),new Date(2001, 01,01),new Date(2002, 01,01),new Date(2003, 01,01),
-//    new Date(2004, 01,01), new Date(2005, 01,01),new Date(2006, 01,01),new Date(2007, 01,01),new Date(2008, 01,01),
-//    new Date(2009, 01,01), new Date(2010, 01,01),new Date(2011, 01,01),new Date(2012, 01,01),new Date(2013, 01,01),new Date(2014, 01,01),new Date(2015, 01,01)]);
-//  allData2.unshift(['year', new Date(2000, 01,01),new Date(2001, 01,01),new Date(2002, 01,01),new Date(2003, 01,01),
-//    new Date(2004, 01,01), new Date(2005, 01,01),new Date(2006, 01,01),new Date(2007, 01,01),new Date(2008, 01,01),
-//    new Date(2009, 01,01), new Date(2010, 01,01),new Date(2011, 01,01),new Date(2012, 01,01),new Date(2013, 01,01),new Date(2014, 01,01),new Date(2015, 01,01)]);
-//  allData3.unshift(['year', new Date(2000, 01,01),new Date(2001, 01,01),new Date(2002, 01,01),new Date(2003, 01,01),
-//    new Date(2004, 01,01), new Date(2005, 01,01),new Date(2006, 01,01),new Date(2007, 01,01),new Date(2008, 01,01),
-//    new Date(2009, 01,01), new Date(2010, 01,01),new Date(2011, 01,01),new Date(2012, 01,01),new Date(2013, 01,01),new Date(2014, 01,01),new Date(2015, 01,01)]);
-//
-//
-//    
-//  data_map.set('allData', allData);
-//  data_map.set('allData2', allData2);
-//  data_map.set('allData3', allData3);
-//    
-//    console.log("data_map",data_map, data_map2);
-  // data is : data_map.get(metadata_map.get(draw_measure_map.get('current_measure')));
+
+
   return 
 }
 
@@ -340,13 +292,7 @@ function draw(){
           type: 'bar',
           pattern: ['#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78', '#2ca02c', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5'],
           onclick: function (d, element) { 
-
-            console.log("click", d, element);
-            // chart.focus(d.id);
           }
-          // labels: {
-          //   format: function (v, id, i, j) { return id }
-          // }
         },
           grid: {
             x: {
@@ -362,9 +308,6 @@ function draw(){
             x: {
                 type: 'timeseries',
                 tick: {
-//                     centered: true,
-//                    fit: true,
-//                    outer: false,
                     format: '%Y',
                     culling: false
                 }
@@ -397,12 +340,7 @@ function draw(){
       source.transition().style('opacity',1);
       source.html(sources_map.get(draw_measure_map.get('current_measure')));
     
-    chart.data.colors(chart2Colors);
     chart1Colors = chart.data.colors()
     
-console.log('colors', chart.data.colors())
-
-}
-  // var explainable = window.explainable;
-    
+}    
 })();

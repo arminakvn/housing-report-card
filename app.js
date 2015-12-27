@@ -24,6 +24,9 @@ var serveStatic = require('serve-static')
 
 
 var app = express();
+
+
+
 var secret = {
   "USER" : "arminavn" ,
   "API_KEY" : "9150413ca8fb81229459d0a5c2947620e42d0940"
@@ -49,6 +52,53 @@ app.use(serveStatic('./lib'))
 app.use(serveStatic('./scripts'))
 
 // app.set('view engine', 'ejs');
+
+
+app.get('/queryData/:q', function(req, res){
+var qu = req.params.q;
+console.log('req.params.q', qu)
+
+var client = new carto(
+  {
+    user:secret.USER, 
+    api_key:secret.API_KEY
+  });
+
+  var query = qu;//"SELECT cartodb_id, the_geom, city_owned, partner_owned, bld_area, bldg_val, land_val, lot_size, total_val, use_code, year_built, zoning from {table} WHERE city='"+city+"'";
+
+  
+
+
+
+  
+
+  client.on('connect', function() {
+    client.query(query, {table:'housing_report_cards_data'}, function(err,data){
+      if(err){ res.send(err); }
+
+      var cities = [];
+      console.log(data);
+      data.rows.forEach(function(each){
+          cities.push(
+            each
+          )
+        })
+     
+
+      res.json({
+      "success": true,
+      "results": cities
+    });
+    }
+  )
+  });
+    
+  client.connect();  
+
+
+})
+
+
 
 app.get('/distinctCity', function(req, res){
 

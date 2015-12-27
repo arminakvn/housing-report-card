@@ -5,11 +5,10 @@ var layout_map2 = d3.map();
 var draw_measure_map2 = d3.map();
     var data_map2 = d3.map();
 var chart2;
-var base_url2= "https://arminavn.cartodb.com/api/v2/sql?q=SELECT * FROM housing_report_cards_data " 
+var base_url2= "SELECT * FROM {table} " 
 var where_clause2 = " WHERE usegrp IN ('1FA') " + "AND town ILIKE('Cambridge')" + "AND level ILIKE('Town')" + "AND year >= 2001 "
 var order_clause2 = " ORDER BY town ASC, year ASC "
 var limit_clause2 = ""
-var api_key = " &api_key=9150413ca8fb81229459d0a5c2947620e42d0940"
 
 url_map2.set('where_clause', where_clause2);
 url_map2.set('order_clause', order_clause2);
@@ -113,12 +112,10 @@ function makeLegendCities2() {
             compare_range = d3.range(val, 2016, 1);
             
             
-//            url_map2.set('where_clause', " WHERE usegrp IN ('1FA') AND ( "+orStrings+" )")
             var compare_to = d3.select('#compare_year_to')
                             .attr('class', 'legend')
                 .selectAll('option')
             .data([], function(d){return d;}).exit().remove();
-            //populate the options for the _to drop downbased on this!
             var compare_to = d3.select('#compare_year_to')
                             .attr('class', 'legend')
                 .selectAll('option')
@@ -131,7 +128,6 @@ function makeLegendCities2() {
             .attr('value', function(id) {return id;})
             .html(function (id) { return id; })
             .on('mouseover', function (id) {
-              // chart.focus(id);
             })
             .on('mouseout', function (id) {
             })
@@ -155,7 +151,7 @@ $('#compare_year_to').dropdown({
     
   var legend_cities_data = [];
   var legend_cities = []
-  var url = "https://arminavn.cartodb.com/api/v2/sql?q=SELECT * FROM housing_report_cards_data WHERE usegrp IN ('1FA') AND year >= 2001 ORDER BY town ASC, year ASC &api_key=9150413ca8fb81229459d0a5c2947620e42d0940";
+  var url = "/queryData/" + "SELECT * FROM {table} WHERE usegrp IN ('1FA') AND year >= 2001 ORDER BY town ASC, year ASC";
   var updateCollection;
   updateCollection = $.ajax(url, {
     type: 'GET',
@@ -183,7 +179,6 @@ $('#compare_year_to').dropdown({
           .attr('value', function(id) {return id;})
           .html(function (id) { return id; })
           .on('mouseover', function (id) {
-              // chart.focus(id);
           })
           .on('mouseout', function (id) {
           })
@@ -191,12 +186,7 @@ $('#compare_year_to').dropdown({
           });
           
           
-//          d3.select('#legend_compares_add').attr('class', 'legend').selectAll('option')
-//          .data(legend_cities)
-//          .enter().append('option')
-//            .attr('data-id', function (id) { return id; })
-//            .attr('value', function(id) {return value;})
-//            .html(function (id) { return id; })
+
         return;
       };
     })(this)
@@ -209,9 +199,7 @@ $('#compare_year_to').dropdown({
 
 
 function makeAjaxCall2(urlMap2) {
-  var url = base_url2 + urlMap2.get('where_clause') + urlMap2.get('order_clause') + urlMap2.get('limit_clause') + api_key
-  console.log(urlMap2)
-  // var url = "https://arminavn.cartodb.com/api/v2/sql?q=SELECT * FROM warren_yr_town WHERE usegrp IN ('1FA') ORDER BY town ASC, year ASC LIMIT 1000&api_key=9150413ca8fb81229459d0a5c2947620e42d0940";
+  var url = "/queryData/" + base_url2 + urlMap2.get('where_clause') + urlMap2.get('order_clause') + urlMap2.get('limit_clause')
   var updateCollection;
   updateCollection = $.ajax(url, {
     type: 'GET',
@@ -219,9 +207,7 @@ function makeAjaxCall2(urlMap2) {
     error: function(jqXHR, textStatus, errorThrown) {},
     success: (function(_this) {
       return function(data, textStatus, jqXHR) {
-        
-        // AllData = data;
-        makeData2(data.rows)
+        makeData2(data.results.rows)
         draw2();
         return;
       };
@@ -236,9 +222,7 @@ function makeAjaxCall2(urlMap2) {
 
 function makeData2(rows) {
   data = [];
-
   rows.forEach(function(each) {
-    // if ((indexOf.call(scity, each.town) >= 0)) {
     data.push(
     {
       year: new Date(each.year, 01,01),
@@ -256,8 +240,6 @@ function makeData2(rows) {
   var nestedData = d3.nest()
     .key(function(d){return d.city})
     .entries(data);
-
-//calculate average fare for each travel date
     nestedData.forEach(function(t){
         t.city = t.key;
         t.max = d3.max(t.values, function(quarter){return quarter.change_in_median_home_value_from_previous_year});
@@ -305,9 +287,6 @@ base_color = d3.rgb(49, 130, 189);
        counterID = counterID + 1;
         
    })
- 
-
-  // data is : data_map.get(metadata_map.get(draw_measure_map.get('current_measure')));
   return 
 }
 
@@ -333,13 +312,7 @@ function draw2(){
           type: 'step',
           pattern: ['#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78', '#2ca02c', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5'],
           onclick: function (d, element) { 
-
-//            console.log("click", d, element);
-            // chart.focus(d.id);
           }
-          // labels: {
-          //   format: function (v, id, i, j) { return id }
-          // }
         },
         axis: {
             x: {
@@ -380,6 +353,5 @@ function draw2(){
 
 
 }
-  // var explainable = window.explainable;
     
 })();
