@@ -12,13 +12,16 @@
   "author": "Armin Akhavan armin.akhavan@gmail.com",
   "license": "Apache Version 2.0",
   "dependencies": {
-     "async": "~1.2.1",
-    "daemon": "^1.1.0",
+    "async": "latest",
+    "bower": "latest",
     "cartodb": "^0.2.1",
-    "express": "~3.4.6",
-    "optimist": "^0.6.1",
-    "request": "~2.21.0",
-    "underscore": "~1.4.4"
+    "daemon": "latest",
+    "express": "latest",
+    "gcloud": "git://github.com/GoogleCloudPlatform/gcloud-node",
+    "googleapis": "latest",
+    "optimist": "latest",
+    "request": "latest",
+    "serve-static": "latest"
   },
   "devDependencies": {
     "matchdep": "~0.1.2",
