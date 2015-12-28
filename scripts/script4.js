@@ -5,6 +5,7 @@ var layout_map = d3.map();
 var draw_measure_map = d3.map();
 var data_map = d3.map();
     var data_map2 = d3.map();
+    
 var chart;
 var base_url = "SELECT * FROM {table} " 
 var where_clause = " WHERE usegrp IN ('1FA') " + "AND town ILIKE('Cambridge')" + "AND level ILIKE('Town')"
@@ -16,7 +17,7 @@ url_map.set('order_clause', order_clause);
 url_map.set('limit_clause', limit_clause);
 
 
-draw_measure_map.set('current_measure', 'forecolsure_petitions')
+draw_measure_map.set('current_measure', 'medsale')
 draw_measure_map.set('current_cities', 'Cambridge')
 
 var metadata_map = d3.map({
@@ -69,10 +70,7 @@ $('#measure_options').dropdown(
             
 
             layout_map.set('table-name', value)
-            console.log('val',value, 'id', id)
             draw_measure_map.set('current_measure', metalabel_map.get(id))
-            // chart.hide(draw_measure_map.get('current_cities'));
-            // chart.show(draw_measure_map.get('current_cities'));
             chart.flow({
               columns: data_map.get(metadata_map.get(metalabel_map.get(id))),
                 duration: 10,
@@ -84,13 +82,8 @@ $('#measure_options').dropdown(
                   chart.show(draw_measure_map.get('current_cities'));
                   draw();
                   
-                  // chart.unload()
                 }
               })
-
-            // chart.load(data_map.get(metadata_map.get(draw_measure_map.get('current_measure'))))
-
-            console.log(data_map.get(metadata_map.get(draw_measure_map.get('current_measure'))))
             
             }
             
@@ -172,7 +165,14 @@ function makeLegendCities() {
 
 
 function makeAjaxCall(urlMap) {
+  
+  if (urlMap.get('where_clause') == " WHERE usegrp IN ('1FA') AND (  )") {
+    urlMap.set('where_clause', "Cambridge")
+  }else{
+    
+  
   var url = '/queryData/' +base_url + urlMap.get('where_clause') + urlMap.get('order_clause') + urlMap.get('limit_clause')
+  }
   var updateCollection;
   updateCollection = $.ajax(url, {
     type: 'GET',
@@ -282,7 +282,7 @@ function draw(){
 
       chart = c3.generate({
         size: {
-          width: 750,
+          // width: 750,
           height: 350
         },
         bindto: "#plot",
@@ -328,7 +328,7 @@ function draw(){
               
         },
         legend: {
-              show: false,
+              show: true,
               position: 'bottom'
           }
 });
@@ -340,7 +340,10 @@ function draw(){
       source.transition().style('opacity',1);
       source.html(sources_map.get(draw_measure_map.get('current_measure')));
     
-    chart1Colors = chart.data.colors()
-    
-}    
+    chart1Colors = chart.data.colors();
+    color_map_d = d3.map(chart1Colors, function(j){
+      return j;
+    })  
+    color_map.set(chart1Colors, function(d) {return d;  });
+}
 })();

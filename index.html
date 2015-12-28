@@ -8,19 +8,12 @@
 
   <!-- Site Properities -->
   <title>HRC</title>
-  <link rel="stylesheet" type="text/css" href="bower_components/semantic-ui/dist/semantic.css">
-  <link rel="stylesheet" type="text/css" href="lib/style.css">
-  <link rel="stylesheet" type="text/css" href="bower_components/c3/c3.css">
- <!-- <link rel="stylesheet" type="text/css" href="semantic.min.css">
+ <link rel="stylesheet" type="text/css" href="semantic.min.css">
   <link rel="stylesheet" type="text/css" href="c3.css">
-  <link rel="stylesheet" type="text/css" href="style.css"> -->
-
-<script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
-<script type="text/javascript" src="bower_components/semantic-ui/dist/semantic.js"></script>
-<script type="text/javascript" src="bower_components/c3/c3.js"></script>
-  <!--<script src="jquery.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <script src="jquery.min.js"></script>
   <script src="semantic.min.js"></script>
-  <script src="c3.js"></script>-->
+  <script src="c3.js"></script>
 
   <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     </head>
@@ -28,21 +21,23 @@
   <div class="container">
   
   <div class="ui vertical segment">
-    <div class="ui four column grid">
-      <div class="four column wide row">
+    <div class="ui ten column grid">
+      <div class="sixteen column wide row">
           <div class="two wide column"></div>
-        <div class="two wide column"><h1 class="ui header">Housing Report Cards</h1></div>
+        <div class="two wide column"></div>
         
       </div>
-      <div class="six column wide row">
-           <div class="two wide column"></div>
-        <div class="ten wide column" >
+      <div class="sixteen column wide row">
+           <div class="three wide column">
+             <h1 class="ui huge right floated header">Housing Report Cards</h1>
+
+           </div>
+        <div class="three wide column" >
           
-          Tracking the <select id="measure_options"  name="measure" class="ui compact dropdown button" >
-          <option value="">Forecolsure Petitions</option>
+          <h2>Tracking the </h2> </br><select id="measure_options"  name="measure" class="ui small dropdown button" >
+          <option value="">e.g. Median Single Family Home Sale Prices</option>
           <option data-id="numsale" value="Single Family Home Sales">Single Family Home Sales</option>
           <option data-id="medsale" value="Median Single Family Home Sale Prices 2000 to 2015">Median Single Family Home Sale Prices</option>
-<!--          <option data-id="yrround_housing_units" value="Year Round Housing Units 2000, 2010">Year Round Housing Units</option>-->
             <option data-id="single_family_units_permitted_imputation_2015_numbers_are_es" value="Housing Permits 2000 to 2015">Housing Permits</option>
         <option data-id="forecolsure_petitions" value="Forecolsure Petitions">Forecolsure Petitions</option>
             <option data-id="foreclosure_deeds " value="Foreclosure Deeds">Foreclosure Deeds</option>
@@ -50,61 +45,60 @@
           
         </select> 
             <div class="ui hidden divider"></div>
-           for <select id="legend_options" name="communities" multiple=""  class="ui compact dropdown button">
-            <option value="">Cambridge</option>
+           for <select id="legend_options" name="communities" multiple=""  class="ui small dropdown button">
+            <option value="">e.g.  Cambridge</option>
           </select> 
         </div>
-      </div>
 
-      <div class="four column wide row">
-          <div class="two wide column"></div>
-        <div class= "ten wide column">
+
+ <div class= "nine wide column">
 
           <h2 id="table-name"></h2>
 
           <div class="canvas" id="plot">
           </div>
-
-        </div>
-
-        </div>
-        <div class="four column wide row">
+<div class="four column wide row">
           <div class="three wide column"></div>
         
 
-          <h6 id="source">Source: <span></span></h6>
+          <span id="source" class="source-caption">Source: <span></span></span>
         </div>
 
-        
-        
-        
-        
-        
-          <div class="ui horizontal divider"></div>
-        
-        
-        
-        <div class="six column wide row">
-         <div class="two wide column"></div>
-            <div class="ten wide column" >
+
+        </div>
+
+
+
+
+<div class="one wide column"></div>
+
+      </div>
+
+
+
+      <div class="ui hidden divider"></div>
+
+
+
+
+
+<div class="sixteen column wide row">
+
+<div class="three wide column"></div>
+<div class="three wide column" >
           
-          Comparing the <select id="compare_options"  name="compare" class="ui compact dropdown button" >
-<!--
-          <option value="">Change in Median Home Value from Previous Year</option>
-          <option data-id="change_in_median_home_value_from_previous_year" value="Change in Median Home Value from Previous Year">Change in Median Home Value from Previous Year</option>
-          <option data-id="change_in_number_of_sales_from_previous_year" value="Change in Number of Sales from Previous Year">Change in Number of Sales from Previous Year</option>
-            <option data-id="change_in_permits_from_previous_year" value="Change in Permits from Previous Year">Change in Permits from Previous Year</option>
---><option value="">Forecolsure Petitions</option>
+          <h2>Comparing the </h2></br><select id="compare_options"  name="compare" class="ui small dropdown button" >
+
+<option value="">e.g. Median Single Family Home Sale Prices</option>
           <option data-id="numsale" value="Single Family Home Sales">Single Family Home Sales</option>
           <option data-id="medsale" value="Median Single Family Home Sale Prices 2000 to 2015">Median Single Family Home Sale Prices</option>
-<!--          <option data-id="yrround_housing_units" value="Year Round Housing Units 2000, 2010">Year Round Housing Units</option>-->
             <option data-id="single_family_units_permitted_imputation_2015_numbers_are_es" value="Housing Permits 2000 to 2015">Housing Permits</option>
         <option data-id="forecolsure_petitions" value="Forecolsure Petitions">Forecolsure Petitions</option>
             <option data-id="foreclosure_deeds " value="Foreclosure Deeds">Foreclosure Deeds</option>
             <option data-id="ytdfsnum " value="Foreclosure Sales">Foreclosure Sales</option>
-        </select><div class="ui hidden divider"></div> from <select id="compare_year_from"  name="compare_year_from" class="ui compact dropdown button" >
-                    <option value="">2005</option>
-                <option data-id="2000" value="2000">2000</option>
+        </select><div class="ui hidden divider"></div> from <select id="compare_year_from"  name="compare_year_from" class="ui small compact dropdown button" >
+                <option value="">e.g. 2006</option>
+
                 <option data-id="2001" value="2001">2001</option>
                 <option data-id="2002" value="2002">2002</option>
                 <option data-id="2003" value="2003">2003</option>
@@ -122,36 +116,41 @@
                 
                 
                 </select>
-                 to <select id="compare_year_to"  name="compare_year_to" class="ui compact dropdown button" >
+                <br></br>
+                 to <select id="compare_year_to"  name="compare_year_to" class="ui small compact dropdown button" >
                 <option value="">2015</option>
                 </select>
                 <div class="ui hidden divider"></div>
            for  
                 
-                <select id="legend_compare" name="communities" multiple=""  class="ui compact dropdown button">
-            <option value="">Boston</option>
+                <select id="legend_compare" name="communities" multiple=""  class="ui small dropdown button">
+            <option value="">e.g.  Boston, Cambridge, Cohasset</option>
           </select> 
         </div>
-      </div>
-        
-         <div class="four column wide row">
-          <div class="two wide column"></div>
-        <div class= "ten wide column">
+
+
+ <div class= "nine wide column">
 
           <h2 id="table-name2"></h2>
 
           <div class="canvas" id="plot2">
+
           </div>
-
-        </div>
-
-        </div>
-        <div class="four column wide row">
+  <div class="four column wide row">
           <div class="three wide column"></div>
         
 
-          <h6 id="source2">Source: <span></span></h6>
+          <span id="source2" class="source-caption">Source: <span></span></span>
         </div>
+        </div>
+
+
+
+<div class="one wide column"></div>
+
+</div>
+     
+          
         
         </div>
         </div>
@@ -159,11 +158,8 @@
     </div>
     
   </div>
-  </div>
   <script>
-//having a global variable defined for colors so it could be access by both charts      
-var chart1Colors = {};
-var chart2Colors = {};
+var color_map = d3.map();
 </script>
   <script src="scripts/script4.js"></script>
 <script src="scripts/script4_2_2.js"></script>

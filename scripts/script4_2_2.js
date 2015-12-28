@@ -7,8 +7,8 @@ var draw_measure_map2 = d3.map();
 var chart2;
 var base_url2=  "SELECT * FROM {table} " 
 var where_clause2 = " WHERE usegrp IN ('1FA') " + "AND level ILIKE('Town')"
-var where_clause_towns2 = "AND town ILIKE('Cambridge') " 
-var where_clause_years2 = " AND year >= 2001 "
+var where_clause_towns2 = "AND town ILIKE('Cambridge') OR town ILIKE('Boston') OR town ILIKE('Cohasset')" 
+var where_clause_years2 = " AND year >= 2006 "
 var order_clause2 = " ORDER BY town ASC, year ASC "
 var limit_clause2 = ""
 
@@ -212,6 +212,12 @@ $('#compare_year_to').dropdown({
 
 
 function makeAjaxCall2(urlMap2) {
+
+
+  
+  if (urlMap2.get('where_clause_towns') == " AND (  )") {
+    urlMap2.set('where_clause_towns', "AND town ILIKE('Cambridge')")
+  }
   var url = '/queryData/' +base_url2 + urlMap2.get('where_clause') + urlMap2.get('where_clause_towns') + urlMap2.get('where_clause_years') + urlMap2.get('order_clause') + urlMap2.get('limit_clause')
   var updateCollection;
   updateCollection = $.ajax(url, {
@@ -357,7 +363,7 @@ function draw2(){
 
       chart2 = c3.generate({
         size: {
-          width: 700,
+          // width: 700,
           height: 350
         },
         bindto: "#plot2",
@@ -369,8 +375,16 @@ function draw2(){
           onclick: function (d, element) { 
 
 
+          },
+          labels: {
+          format: function (v, id, i, j) {return id; }
+        }
+
+        },
+        bar: {
+          width: {
+            ratio: 0.4
           }
-       
         },
         grid: {
             x: {
@@ -378,7 +392,7 @@ function draw2(){
             },
             y: {
                 lines: [
-                    {value: 0, text: '0% - No change'}
+                    {value: 0, text: '0%'}
                 ]
             }
         },
@@ -407,18 +421,22 @@ function draw2(){
               
         },
         legend: {
-              show: false,
+              show: true,
               position: 'bottom'
           }
 });
-    chart2.data.colors(chart1Colors)
+    
       function toggle(id) {
           chart2.toggle(id);
       }
-    chart2Colors = chart2.data.colors();
       tableName.transition().style('opacity',1);
       tableName.html(layout_map2.get('table-name'));
       source.transition().style('opacity',1);
       source.html(sources_map2.get(draw_measure_map2.get('current_measure')));
+      chart2Colors = chart2.data.colors();
+    color_map_d = d3.map(chart2Colors, function(j){
+      return j;
+    })  
+
 } 
 })();

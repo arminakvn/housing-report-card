@@ -1,8 +1,8 @@
 {
-  "name": "netxt",
+  "name": "housing-report-card",
   "version": "1.0.0",
-  "description": "template for google compute with semantic-ui",
-  "repository": "https://github.com/GoogleCloudPlatform/nodejs-getting-started",
+  "description": "housing report card data portal",
+  "repository": "https://github.com/arminakvn/housing-report-card",
   "private": true,
   "scripts": {
     "start": "node app.js",

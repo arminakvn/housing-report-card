@@ -56,7 +56,6 @@ app.use(serveStatic('./scripts'))
 
 app.get('/queryData/:q', function(req, res){
 var qu = req.params.q;
-console.log('req.params.q', qu)
 
 var client = new carto(
   {
@@ -77,7 +76,6 @@ var client = new carto(
       if(err){ res.send(err); }
 
       var cities = [];
-      console.log(data);
       data.rows.forEach(function(each){
           cities.push(
             each
@@ -154,6 +152,5 @@ app.get('/', function(req, res) {
 var server = app.listen(process.env.PORT || '8080', '0.0.0.0', function() {
   console.log('App listening at http://%s:%s', server.address().address, server.address().port);
   console.log("Press Ctrl+C to quit.");
-  console.log("checking if adjustments work");
 });
 // [END server]
