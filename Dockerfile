@@ -1,3 +1,4 @@
+
 #	Copyright 2015, Google, Inc. 
 # Licensed under the Apache License, Version 2.0 (the "License"); 
 # you may not use this file except in compliance with the License. 
@@ -12,14 +13,16 @@
 # limitations under the License.
 #
 # [START docker]
-FROM google/nodejs-runtime
-RUN mkdir -p /app
+FROM gcr.io/google_appengine/nodejs
+ADD package.json npm-shrinkwrap.json* /app/
+RUN npm --unsafe-perm install
+ADD . /app
 WORKDIR /app
 ADD package.json /usr/app/package.json
-RUN cd /usr/app && npm install
-RUN npm install -g bower
-ADD bower.json /usr/app/bower.json  
-RUN bower install --config.interactive=false --allow-root  
-ADD . /usr/app
+ADD bower.json /usr/app/bower.json
+ADD lib /usr/app/lib
+ADD scripts /usr/app/scripts
+ADD app.js /usr/app/app.js
+ADD app.yaml /usr/app/app.yaml
 # EXPOSE 8080
 # [END docker]
